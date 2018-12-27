@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Tank.h"
+#include "TankAimingComponent.h"
 #include "AIController.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Actor.h"
-#include "Tank.h"
-#include "TankAimingComponent.h"
 #include "TankAIController.generated.h"
 
 /**
