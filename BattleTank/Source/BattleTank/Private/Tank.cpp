@@ -3,6 +3,7 @@
 #include "TankTurret.h"
 #include "Projectile.h"
 #include "TankAimingComponent.h"
+#include "TankMovementComponent.h"
 
 ATank::ATank()
 {
@@ -48,5 +49,10 @@ void ATank::Fire()
     Projectile->LaunchProjectile(LaunchSpeed);
         LastFireTime = FPlatformTime::Seconds();
     }
+}
+
+void ATank::MoveForward(float Throw)
+{
+    TankMovementComponent->IntendMoveForward(Throw);
 }
 
