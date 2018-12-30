@@ -39,9 +39,14 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 
 void ATank::Fire()
 {
-    UE_LOG(LogTemp, Warning, TEXT("FIRE"))
+    bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeSeconds;
     
-    if (!Barrel) {return;}
-    GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("Projectile"), Barrel->GetSocketRotation("Projectile"));
+    if (Barrel && isReloaded)
+    {
+    auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("Projectile"), Barrel->GetSocketRotation("Projectile"));
+    
+    Projectile->LaunchProjectile(LaunchSpeed);
+        LastFireTime = FPlatformTime::Seconds();
+    }
 }
 
