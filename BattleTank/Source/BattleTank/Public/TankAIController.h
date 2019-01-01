@@ -8,7 +8,6 @@
 #include "GameFramework/Actor.h"
 #include "TankAIController.generated.h"
 
-class ATank;
 class UTankAimingComponent;
 
 UCLASS()
@@ -17,8 +16,6 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
     
 private:
-    void BeginPlay() override;
-    
     virtual void Tick(float DeltaTime) override;
     
     float AcceptanceRadius = 300;
