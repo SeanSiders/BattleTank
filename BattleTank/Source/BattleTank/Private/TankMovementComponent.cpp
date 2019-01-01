@@ -1,5 +1,4 @@
 #include "TankMovementComponent.h"
-#include "BattleTank.h"
 #include "TankTrack.h"
 
 void UTankMovementComponent::Initialise(UTankTrack* LTrackToSet, UTankTrack* RTrackToSet)
@@ -10,14 +9,14 @@ void UTankMovementComponent::Initialise(UTankTrack* LTrackToSet, UTankTrack* RTr
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
 {
-    if (!LTrack || !RTrack) {return;}
+    if (!ensure(LTrack && RTrack)) {return;}
     LTrack->SetThrottle(Throw);
     RTrack->SetThrottle(Throw);
 }
 
-void UTankMovementComponent::RIntendTurn(float Throw)
+void UTankMovementComponent::IntendTurnRight(float Throw)
 {
-    if (!LTrack || !RTrack) {return;}
+    if (!ensure(LTrack && RTrack)) {return;}
     LTrack->SetThrottle(Throw);
     RTrack->SetThrottle(-Throw);
 }
@@ -26,7 +25,10 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 {
     auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
     auto AIForwardIntention = MoveVelocity.GetSafeNormal();
+    
     auto ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
+    auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention);
     IntendMoveForward(ForwardThrow);
+    IntendTurnRight(RightThrow.Z);
 }
 
