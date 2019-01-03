@@ -17,10 +17,12 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
+    if (!GetPawn()) {return;}
     auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
     if (!ensure(AimingComponent)) {return;}
     
     FVector HitLocation; // out param
+    
     if (GetSightRayHitLocation(HitLocation))
     {
         AimingComponent->AimAt(HitLocation);
@@ -37,8 +39,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector &OutHitLocation) cons
     FVector AimDirection;
     if (GetAimDirection(ScreenLocation, AimDirection))
     {
-        GetLookVectorHitLocation(AimDirection, OutHitLocation);
-        return true;
+        return GetLookVectorHitLocation(AimDirection, OutHitLocation);
     }
     return false;
 }

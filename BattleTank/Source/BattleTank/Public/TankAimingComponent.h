@@ -26,6 +26,8 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Firing")
     void Fire();
     
+    EFiringState GetFiringState() const;
+    
 protected:
     UPROPERTY(BlueprintReadOnly, Category = "State")
     EFiringState FiringState = EFiringState::Reloading;
@@ -45,7 +47,7 @@ private:
     void MoveTurretTowards(FVector AimDirection);
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float LaunchSpeed = 4000;
+    float LaunchSpeed = 20000;
     
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
