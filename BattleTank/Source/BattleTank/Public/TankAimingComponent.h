@@ -6,7 +6,7 @@
 #include "TankAimingComponent.generated.h"
 
 UENUM()
-enum class EFiringState : uint8 {Reloading, Aiming, Locked};
+enum class EFiringState : uint8 {Reloading, Aiming, Locked, OutOfAmmo};
 
 class UTankBarrel;
 class UTankTurret;
@@ -28,6 +28,9 @@ public:
     
     EFiringState GetFiringState() const;
     
+    UFUNCTION(BlueprintCallable, Category = "Firing")
+    int32 GetRoundsLeft() const;
+    
 protected:
     UPROPERTY(BlueprintReadOnly, Category = "State")
     EFiringState FiringState = EFiringState::Reloading;
@@ -36,7 +39,7 @@ private:
     UTankAimingComponent();
     
     virtual void BeginPlay() override;
-    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction);
+    virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
     
     UTankBarrel* Barrel = nullptr;
     void MoveBarrelTowards(FVector AimDirection);
@@ -47,13 +50,16 @@ private:
     void MoveTurretTowards(FVector AimDirection);
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float LaunchSpeed = 20000;
+    float LaunchSpeed = 4000;
     
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float ReloadTimeSeconds = 3;
+    float ReloadTimeSeconds = .1;
+    
+    UPROPERTY(EditDefaultsOnly, Category = "Firing")
+    int32 RoundsLeft = 10;
     
     double LastFireTime = 0;
     
