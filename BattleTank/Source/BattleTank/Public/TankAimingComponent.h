@@ -50,16 +50,16 @@ private:
     void MoveTurretTowards(FVector AimDirection);
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float LaunchSpeed = 4000;
+    float LaunchSpeed = 8000;
     
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    float ReloadTimeSeconds = .1;
+    float ReloadTimeSeconds = 2;
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
-    int32 RoundsLeft = 10;
+    int32 RoundsLeft = 20;
     
     double LastFireTime = 0;
     
