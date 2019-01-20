@@ -78,11 +78,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
     }
 }
 
-void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+void UTankAimingComponent::MoveBarrelTowards(FVector TargetAimDirection)
 {
     if (!ensure(Barrel)) {return;}
     auto BarrelRotator = Barrel->GetForwardVector().Rotation();
-    auto AimAsRotator = AimDirection.Rotation();
+    auto AimAsRotator = TargetAimDirection.Rotation();
     auto DeltaRotator = AimAsRotator - BarrelRotator;
     
     Barrel->Elevate(DeltaRotator.Pitch);
@@ -117,7 +117,7 @@ void UTankAimingComponent::Fire()
     if (FiringState == EFiringState::Locked || FiringState == EFiringState::Aiming)
     {
         if (!ensure(Barrel)) {return;}
-        if (!ensure(ProjectileBlueprint)) {return;}
+        if (!ProjectileBlueprint) {return;}
         auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, Barrel->GetSocketLocation("Projectile"), Barrel->GetSocketRotation("Projectile"));
         
         Projectile->LaunchProjectile(LaunchSpeed);
