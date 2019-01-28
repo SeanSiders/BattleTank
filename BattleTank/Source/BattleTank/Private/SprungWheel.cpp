@@ -8,6 +8,7 @@ ASprungWheel::ASprungWheel()
 	PrimaryActorTick.bCanEverTick = true;
     PrimaryActorTick.TickGroup = TG_PostPhysics;
     
+    // this constraint will act as suspension for the vehicle
     MassWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("MassWheelConstraint"));
     SetRootComponent(MassWheelConstraint);
     
@@ -17,6 +18,7 @@ ASprungWheel::ASprungWheel()
     Wheel = CreateDefaultSubobject<USphereComponent>(FName("Wheel"));
     Wheel->SetupAttachment(Axle);
     
+    // this constraint will act as the wheel barring
     AxleWheelConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("AxleWheelConstraint"));
     AxleWheelConstraint->SetupAttachment(Axle);
 }
@@ -26,6 +28,7 @@ void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
     
+    // when the wheel is grounded, call OnHit
     Wheel->SetNotifyRigidBodyCollision(true);
     Wheel->OnComponentHit.AddDynamic(this, &ASprungWheel::OnHit);
     
@@ -36,8 +39,10 @@ void ASprungWheel::BeginPlay()
 void ASprungWheel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+    // TG_PostPhysics is specifying a tick that implements after physics are apply that frame
     if (GetWorld()->TickGroup == TG_PostPhysics)
     {
+        // this resets the vehicle's movement force so magnitude does not build exponentially
         TotalForceMagnitudeThisFrame = 0;
     }
 }
@@ -45,12 +50,17 @@ void ASprungWheel::Tick(float DeltaTime)
 void ASprungWheel::SetupConstraints()
 {
     if (!GetAttachParentActor()) {return;}
+    // getting the root component of the owning tank, this will serve as on of the vehicle shock restraints
     UPrimitiveComponent* BodyRoot = Cast<UPrimitiveComponent>(GetAttachParentActor()->GetRootComponent());
     if (!BodyRoot) {return;}
+    // setting the "shock" constraint between vehicle and axle
     MassWheelConstraint->SetConstrainedComponents(BodyRoot, NAME_None, Axle, NAME_None);
+    // setting the "barring constraint between axle and wheel
     AxleWheelConstraint->SetConstrainedComponents(Axle, NAME_None, Wheel, NAME_None);
 }
 
+// called from UTankTrack, where the force is calculated from user input
+// user input X axis and Y axis values are summed in ForceMagnitude
 void ASprungWheel::AddDrivingForce(float ForceMagnitude)
 {
     TotalForceMagnitudeThisFrame += ForceMagnitude;
@@ -58,11 +68,13 @@ void ASprungWheel::AddDrivingForce(float ForceMagnitude)
 
 void ASprungWheel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+    // when wheel is grounded
     ApplyForce();
 }
 
 void ASprungWheel::ApplyForce()
 {
+    // add force to the axle's forward vector in proportion to the current force magnitude
     Wheel->AddForce(Axle->GetForwardVector() * TotalForceMagnitudeThisFrame);
 }
 

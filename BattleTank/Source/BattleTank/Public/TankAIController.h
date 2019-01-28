@@ -14,6 +14,7 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
     
 protected:
+    // the distance an AI will stop navigating towards the player
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     float AcceptanceRadius = 8000;
     

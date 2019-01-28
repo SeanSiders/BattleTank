@@ -18,6 +18,7 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
+    // Tank_BP function that ties a static mesh to it's cooresponding c++ components
     UFUNCTION(BlueprintCallable, Category = "Setup")
     void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
     
@@ -32,6 +33,8 @@ public:
     int32 GetRoundsLeft() const;
     
 protected:
+    // used to assign UI crosshair color in relation to EFiringState in PlayerUI_BP
+    // PlayerUI_BP has a reference to UTankAimingComponent through a blueprint pointer variable
     UPROPERTY(BlueprintReadOnly, Category = "State")
     EFiringState FiringState = EFiringState::Reloading;
     
@@ -41,17 +44,18 @@ private:
     virtual void BeginPlay() override;
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
     
-    UTankBarrel* Barrel = nullptr;
+    UTankBarrel* Barrel = nullptr; // assigned in Initialze()
     void MoveBarrelTowards(FVector AimDirection);
     
     bool IsBarrelMoving();
     
-    UTankTurret* Turret = nullptr;
+    UTankTurret* Turret = nullptr; // assigned in Initialze()
     void MoveTurretTowards(FVector AimDirection);
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
     float LaunchSpeed = 8000;
     
+    // reference to Projectile_BP
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     TSubclassOf<AProjectile> ProjectileBlueprint;
     

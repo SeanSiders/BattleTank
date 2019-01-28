@@ -5,9 +5,10 @@
 #include "Tank.generated.h"
 
 /*
- *
+ * Basic initilization of tank "health". All other characteristics are iniherited by components.
 */
 
+// creating FTankDelegate to trigger an event using Broacast()
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
 UCLASS()

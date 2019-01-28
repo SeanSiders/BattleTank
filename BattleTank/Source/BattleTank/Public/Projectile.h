@@ -27,6 +27,8 @@ public:
 private:
     UProjectileMovementComponent* ProjectileMovement = nullptr;
     
+    /* collision detection for the projectile */
+    /* passing in the primitive component projectile and the actor that collides with it, a hit result is output */
     UFUNCTION()
     void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
     
@@ -38,6 +40,7 @@ private:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     float ProjectileDamage = 20;
     
+    /* components appear in Projectile_BP with params that are defined in AProjectile::AProjectile() */
     UPROPERTY(VisibleAnywhere, Category = "Components")
     UStaticMeshComponent* CollisionMesh = nullptr;
     

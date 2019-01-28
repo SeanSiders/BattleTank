@@ -7,7 +7,7 @@
 class UTankTrack;
 
 /**
- * Drives tank tracks
+ * Takes incoming float axis inputs, and passes them down to UTankTrack
  */
 UCLASS(meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent

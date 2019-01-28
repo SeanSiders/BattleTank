@@ -10,7 +10,7 @@ void ATank::BeginPlay()
     Super::BeginPlay();
     CurrentHealth = StartingHealth;
 }
-
+// calculates damage to current health, calls tank death event up 0 health which is delegated down to APlayerController
 float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser)
 {
     int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
@@ -19,7 +19,7 @@ float ATank::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEv
     CurrentHealth -= DamageToApply;
     if (CurrentHealth <= 0)
     {
-        OnDeath.Broadcast();
+        OnDeath.Broadcast(); // APlayerController recieves broadcast
     }
     return DamageToApply;
 }
