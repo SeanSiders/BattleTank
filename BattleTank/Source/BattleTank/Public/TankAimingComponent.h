@@ -44,12 +44,12 @@ private:
     virtual void BeginPlay() override;
     virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
     
-    UTankBarrel* Barrel = nullptr; // assigned in Initialze()
+    UTankBarrel* Barrel = nullptr; // assigned in Initialize()
     void MoveBarrelTowards(FVector AimDirection);
     
     bool IsBarrelMoving();
     
-    UTankTurret* Turret = nullptr; // assigned in Initialze()
+    UTankTurret* Turret = nullptr; // assigned in Initialize()
     void MoveTurretTowards(FVector AimDirection);
     
     UPROPERTY(EditDefaultsOnly, Category = "Firing")
