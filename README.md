@@ -1,3 +1,1 @@
-# BattleTank
-* Section Intro
-* GDD
+
